@@ -80,7 +80,25 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            graphView.moveRocketAlongCurve()
+            graphView.moveRocketAlongCurve { success ->
+
+                if (success) {
+
+                    Toast.makeText(
+                        this,
+                        "🎉 Level Complete!",
+                        Toast.LENGTH_LONG
+                    ).show()
+
+                } else {
+
+                    Toast.makeText(
+                        this,
+                        "❌ Try Again",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import kotlin.math.sin
+import kotlin.math.sqrt
 
 class GraphView(
     context: Context,
@@ -14,9 +15,7 @@ class GraphView(
 ) : View(context, attrs) {
 
     private val curvePaint = Paint()
-
     private val pointPaint = Paint()
-
     private val textPaint = Paint()
 
     var equationType = "quadratic"
@@ -39,7 +38,6 @@ class GraphView(
         super.onDraw(canvas)
 
         drawCurve(canvas)
-
         drawStartAndEnd(canvas)
     }
 
@@ -85,8 +83,8 @@ class GraphView(
         val startX = 40f
         val startY = height - 40f
 
-        val endX = 650f
-        val endY = 80f
+        val endX = 730f
+        val endY = 330f
 
         if (rocketY == 0f) {
             rocketX = startX
@@ -129,7 +127,7 @@ class GraphView(
         )
     }
 
-    fun moveRocketAlongCurve() {
+    fun moveRocketAlongCurve(onResult: (Boolean) -> Unit) {
 
         Thread {
 
@@ -158,6 +156,20 @@ class GraphView(
                 postInvalidate()
 
                 Thread.sleep(50)
+            }
+
+            val endX = 730f
+            val endY = 330f
+
+            val distance = sqrt(
+                ((rocketX - endX) * (rocketX - endX) +
+                        (rocketY - endY) * (rocketY - endY)).toDouble()
+            )
+
+            val success = equationType == "quadratic"
+
+            post {
+                onResult(success)
             }
 
         }.start()
