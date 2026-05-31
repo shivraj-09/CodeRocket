@@ -142,14 +142,17 @@ class GraphView(
 
             2 -> {
                 targetX = 750f
-                targetY = 40f
+                targetY = 350f
             }
 
             3 -> {
                 targetX = 750f
-                targetY = 120f
+                targetY = 450f
             }
         }
+
+        rocketX = 40f
+        rocketY = 0f
 
         invalidate()
     }

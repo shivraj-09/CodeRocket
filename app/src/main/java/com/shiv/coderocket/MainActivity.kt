@@ -9,15 +9,19 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var selectedEquationText: TextView
+    private lateinit var levelText: TextView
     private lateinit var graphView: GraphView
 
     private var selectedEquation = ""
+    private var currentLevel = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         graphView = findViewById(R.id.graphView)
+
+        levelText = findViewById(R.id.levelText)
 
         graphView.loadLevel(1)
 
@@ -91,6 +95,36 @@ class MainActivity : AppCompatActivity() {
                         "🎉 Level Complete!",
                         Toast.LENGTH_LONG
                     ).show()
+
+                    currentLevel++
+
+                    when (currentLevel) {
+
+                        2 -> {
+                            graphView.loadLevel(2)
+                            levelText.text = "Level 2"
+                        }
+
+                        3 -> {
+                            graphView.loadLevel(3)
+                            levelText.text = "Level 3"
+                        }
+
+                        4 -> {
+
+                            Toast.makeText(
+                                this,
+                                "🏆 You Finished The Game!",
+                                Toast.LENGTH_LONG
+                            ).show()
+
+                            currentLevel = 1
+
+                            graphView.loadLevel(1)
+
+                            levelText.text = "Level 1"
+                        }
+                    }
 
                 } else {
 
