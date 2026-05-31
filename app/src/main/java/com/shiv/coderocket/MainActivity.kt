@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
 
         graphView = findViewById(R.id.graphView)
 
+        graphView.loadLevel(1)
+
         selectedEquationText =
             findViewById(R.id.selectedEquation)
 

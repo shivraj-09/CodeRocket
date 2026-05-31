@@ -20,6 +20,11 @@ class GraphView(
 
     var equationType = "quadratic"
 
+    var currentLevel = 1
+
+    var targetX = 750f
+    var targetY = 200f
+
     var rocketX = 40f
     var rocketY = 0f
 
@@ -83,9 +88,6 @@ class GraphView(
         val startX = 40f
         val startY = height - 40f
 
-        val endX = 730f
-        val endY = 330f
-
         if (rocketY == 0f) {
             rocketX = startX
             rocketY = startY
@@ -113,18 +115,43 @@ class GraphView(
         )
 
         canvas.drawCircle(
-            endX,
-            endY,
+            targetX,
+            targetY,
             15f,
             pointPaint
         )
 
         canvas.drawText(
             "⭐ B",
-            endX + 20,
-            endY,
+            targetX + 20,
+            targetY,
             textPaint
         )
+    }
+
+    fun loadLevel(level: Int) {
+
+        currentLevel = level
+
+        when (level) {
+
+            1 -> {
+                targetX = 750f
+                targetY = 550f
+            }
+
+            2 -> {
+                targetX = 750f
+                targetY = 40f
+            }
+
+            3 -> {
+                targetX = 750f
+                targetY = 120f
+            }
+        }
+
+        invalidate()
     }
 
     fun moveRocketAlongCurve(onResult: (Boolean) -> Unit) {
@@ -158,15 +185,17 @@ class GraphView(
                 Thread.sleep(50)
             }
 
-            val endX = 730f
-            val endY = 330f
+            println("Rocket End X = $rocketX")
+            println("Rocket End Y = $rocketY")
 
             val distance = sqrt(
-                ((rocketX - endX) * (rocketX - endX) +
-                        (rocketY - endY) * (rocketY - endY)).toDouble()
+                (
+                        (rocketX - targetX) * (rocketX - targetX) +
+                                (rocketY - targetY) * (rocketY - targetY)
+                        ).toDouble()
             )
 
-            val success = equationType == "quadratic"
+            val success = distance < 80
 
             post {
                 onResult(success)
