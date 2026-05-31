@@ -80,11 +80,7 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            Toast.makeText(
-                this,
-                "Running $selectedEquation",
-                Toast.LENGTH_SHORT
-            ).show()
+            graphView.moveRocketAlongCurve()
         }
     }
 }
