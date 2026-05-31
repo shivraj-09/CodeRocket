@@ -2,91 +2,88 @@ package com.shiv.coderocket
 
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlin.math.abs
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var rocket: TextView
-    private lateinit var star: TextView
-    private lateinit var codeInput: EditText
-    private lateinit var runButton: Button
+    private lateinit var selectedEquationText: TextView
+    private lateinit var graphView: GraphView
+
+    private var selectedEquation = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        rocket = findViewById(R.id.rocket)
-        star = findViewById(R.id.star)
-        codeInput = findViewById(R.id.codeInput)
-        runButton = findViewById(R.id.runButton)
+        graphView = findViewById(R.id.graphView)
 
-        runButton.setOnClickListener {
+        selectedEquationText =
+            findViewById(R.id.selectedEquation)
 
-            val code = codeInput.text.toString()
+        val quadratic =
+            findViewById<Button>(R.id.btnQuadratic)
 
-            val commands = code.split("\n")
+        val cubic =
+            findViewById<Button>(R.id.btnCubic)
 
-            for (command in commands) {
+        val sine =
+            findViewById<Button>(R.id.btnSine)
 
-                when (command.trim()) {
+        val run =
+            findViewById<Button>(R.id.runButton)
 
-                    "moveRight()" -> {
-                        if (rocket.x < 800) {
-                            rocket.x += 100
-                        }
-                    }
+        quadratic.setOnClickListener {
 
-                    "moveLeft()" -> {
-                        if (rocket.x > 0) {
-                            rocket.x -= 100
-                        }
-                    }
+            selectedEquation = "quadratic"
 
-                    "moveDown()" -> {
-                        if (rocket.y < 800) {
-                            rocket.y += 100
-                        }
-                    }
+            selectedEquationText.text =
+                "Selected: y = x²"
 
-                    "moveUp()" -> {
-                        if (rocket.y > 0) {
-                            rocket.y -= 100
-                        }
-                    }
-
-                    "" -> {
-                        // Ignore empty lines
-                    }
-
-                    else -> {
-                        Toast.makeText(
-                            this,
-                            "Invalid Command: $command",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
-
-            checkWin()
+            graphView.equationType = "quadratic"
+            graphView.invalidate()
         }
-    }
 
-    private fun checkWin() {
+        cubic.setOnClickListener {
 
-        val distanceX = abs(rocket.x - star.x)
-        val distanceY = abs(rocket.y - star.y)
+            selectedEquation = "cubic"
 
-        if (distanceX < 100 && distanceY < 100) {
+            selectedEquationText.text =
+                "Selected: y = x³"
+
+            graphView.equationType = "cubic"
+            graphView.invalidate()
+        }
+
+        sine.setOnClickListener {
+
+            selectedEquation = "sine"
+
+            selectedEquationText.text =
+                "Selected: y = sin(x)"
+
+            graphView.equationType = "sine"
+            graphView.invalidate()
+        }
+
+        run.setOnClickListener {
+
+            if (selectedEquation.isEmpty()) {
+
+                Toast.makeText(
+                    this,
+                    "Select an equation first!",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@setOnClickListener
+            }
 
             Toast.makeText(
                 this,
-                "Level Complete! 🚀",
-                Toast.LENGTH_LONG
+                "Running $selectedEquation",
+                Toast.LENGTH_SHORT
             ).show()
         }
     }
